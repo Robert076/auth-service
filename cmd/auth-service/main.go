@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	validate "github.com/Robert076/auth-service/internal"
+	validate "github.com/Robert076/auth-service/internal/validate"
 )
 
 func main() {
