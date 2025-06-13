@@ -15,8 +15,10 @@ import (
 func main() {
 	const serviceName = "AUTH-SERVICE"
 
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("%s: Failed loading env file", serviceName)
+	if os.Getenv("ENVIRONMENT") != "PRODUCTION" {
+		if err := godotenv.Load(); err != nil {
+			log.Fatalf("%s: Failed loading env file", serviceName)
+		}
 	}
 
 	db, err := db_config.InitDB()
