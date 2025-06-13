@@ -22,7 +22,7 @@ func main() {
 	db, err := db_config.InitDB()
 
 	if err != nil {
-		log.Fatalf("%s: Failed to initialize db", serviceName)
+		log.Fatalf("%s: Failed to initialize db: %v", serviceName, err)
 	}
 
 	defer db.Close()
