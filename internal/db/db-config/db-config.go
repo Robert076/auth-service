@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type DBConfig struct {
@@ -17,7 +15,6 @@ type DBConfig struct {
 }
 
 func LoadDBConfig() DBConfig {
-	godotenv.Load()
 	return DBConfig{
 		Host:     os.Getenv("DB_HOST"),
 		User:     os.Getenv("DB_USER"),
