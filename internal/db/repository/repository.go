@@ -26,4 +26,5 @@ func RegisterUser() error {
 	if err := db.Ping(); err != nil {
 		return fmt.Errorf("error pinging database: %v", err)
 	}
+	return nil
 }
