@@ -3,28 +3,25 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
-	db_config "github.com/Robert076/auth-service/internal/db/db-config"
+	"github.com/Robert076/auth-service/internal/service"
+	user "github.com/Robert076/auth-service/internal/user"
 	_ "github.com/lib/pq"
 )
 
-func RegisterUser() error {
-	dbConfig := db_config.LoadDBConfig()
-
-	psqlInfo := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Password, dbConfig.DBName,
-	)
-
-	db, err := sql.Open("postgres", psqlInfo)
+func RegisterUser(db *sql.DB, user user.User) error {
+	hashedPassword, err := service.HashPassword(user.Password)
 
 	if err != nil {
-		return fmt.Errorf("error opening database: %v", err)
+		return fmt.Errorf("could not hash password: %v", err)
 	}
-	defer db.Close()
 
-	if err := db.Ping(); err != nil {
-		return fmt.Errorf("error pinging database: %v", err)
+	query := `INSERT INTO "Users"("Username", "Email", "Password", "CreatedAt") VALUES($1, $2, $3, $4)`
+
+	if _, err := db.Exec(query, user.Username, user.Email, hashedPassword, time.Now()); err != nil {
+		return fmt.Errorf("error inserting new user: %v", err)
 	}
+
 	return nil
 }
