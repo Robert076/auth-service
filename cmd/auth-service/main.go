@@ -21,8 +21,12 @@ func main() {
 		}
 	}
 
-	db, err := db_config.InitDB()
+	cfg, err := db_config.LoadDBConfig()
+	if err != nil {
+		log.Fatalf("%s: Failed to load db config: %v", serviceName, err)
+	}
 
+	db, err := cfg.InitDB()
 	if err != nil {
 		log.Fatalf("%s: Failed to initialize db: %v", serviceName, err)
 	}
