@@ -11,11 +11,11 @@ import (
 )
 
 type PostgresRepository struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 func NewPostgresRepository(db *sql.DB) *PostgresRepository {
-	return &PostgresRepository{db: db}
+	return &PostgresRepository{Db: db}
 }
 
 func (r *PostgresRepository) RegisterUser(user user.User) error {
@@ -25,7 +25,7 @@ func (r *PostgresRepository) RegisterUser(user user.User) error {
 	}
 
 	query := `INSERT INTO "Users"("Username", "Email", "Password", "CreatedAt") VALUES($1, $2, $3, $4)`
-	_, err = r.db.Exec(query, user.Username, user.Email, hashedPassword, time.Now())
+	_, err = r.Db.Exec(query, user.Username, user.Email, hashedPassword, time.Now())
 	if err != nil {
 		return fmt.Errorf("postgres insert error: %v", err)
 	}

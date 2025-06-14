@@ -11,11 +11,11 @@ import (
 )
 
 type MySQLRepository struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 func NewMySQLRepository(db *sql.DB) *MySQLRepository {
-	return &MySQLRepository{db: db}
+	return &MySQLRepository{Db: db}
 }
 
 func (r *MySQLRepository) RegisterUser(user user.User) error {
@@ -25,7 +25,7 @@ func (r *MySQLRepository) RegisterUser(user user.User) error {
 	}
 
 	query := `INSERT INTO Users (Username, Email, Password, CreatedAt) VALUES (?, ?, ?, ?)`
-	_, err = r.db.Exec(query, user.Username, user.Email, hashedPassword, time.Now())
+	_, err = r.Db.Exec(query, user.Username, user.Email, hashedPassword, time.Now())
 	if err != nil {
 		return fmt.Errorf("mysql insert error: %v", err)
 	}
