@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	db_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies"
+	mysql_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies/mysql-strategy.go"
+	postgres_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies/postgres-strategy.go"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
@@ -44,28 +47,25 @@ func LoadDBConfig() (DBConfig, error) {
 	}, nil
 }
 
-func (cfg *DBConfig) InitDB() (*sql.DB, error) {
-	var driver string
-	var dsn string
-
+func (cfg DBConfig) Strategy() (db_strategy.DBStrategy, error) {
 	switch cfg.Type {
 	case Postgres:
-		driver = "postgres"
-		dsn = fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-			cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode,
-		)
+		return postgres_strategy.PostgresStrategy{
+			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
+			Password: cfg.Password, DbName: cfg.DBName, SSLMode: cfg.SSLMode,
+		}, nil
 	case MySQL:
-		driver = "mysql"
-		dsn = fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s?parseTime=true",
-			cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName,
-		)
+		return mysql_strategy.MySQLStrategy{
+			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
+			Password: cfg.Password, DbName: cfg.DBName,
+		}, nil
 	default:
 		return nil, fmt.Errorf("unsupported db type: %s", cfg.Type)
 	}
+}
 
-	db, err := sql.Open(driver, dsn)
+func InitDB(strategy db_strategy.DBStrategy) (*sql.DB, error) {
+	db, err := sql.Open(strategy.DriverName(), strategy.DSN())
 	if err != nil {
 		return nil, fmt.Errorf("failed to open DB: %v", err)
 	}

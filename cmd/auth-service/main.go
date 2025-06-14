@@ -26,9 +26,14 @@ func main() {
 		log.Fatalf("%s: Failed to load db config: %v", serviceName, err)
 	}
 
-	db, err := cfg.InitDB()
+	dbstrategy, err := cfg.Strategy()
 	if err != nil {
-		log.Fatalf("%s: Failed to initialize db: %v", serviceName, err)
+		log.Fatalf("%s: Failed to load db strategy: %v", serviceName, err)
+	}
+
+	db, err := db_config.InitDB(dbstrategy)
+	if err != nil {
+		log.Fatalf("%s: Failed to init db: %v", serviceName, err)
 	}
 
 	defer db.Close()
