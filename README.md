@@ -2,6 +2,8 @@
 
 A standalone microservice that implements authorization using a PostgreSQL database and implemented in Go.
 
+One of the main focuses during this project was to concentrate on making the code scalable, and that is achieved by using the strategy pattern wherever possible.
+
 ### 🚀 Run command
 
 ```bash
