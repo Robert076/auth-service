@@ -74,6 +74,14 @@ func main() {
 		log.Printf("%s: Successfully added user in db.", serviceName)
 	})
 
+	http.HandleFunc("/login", func(writer http.ResponseWriter, request *http.Request) {
+		if err := validation_service.IsValidHttpRequest(request, http.MethodGet); err != nil {
+			http.Error(writer, "Invalid method for request. This endpoint only accepts GET.", http.StatusBadRequest)
+			log.Printf("%s: Error validating request for GET (login). The issue might be that this endpoint only accepts GET requests. Error: %v", serviceName, err)
+			return
+		}
+	})
+
 	if err := http.ListenAndServe(":"+os.Getenv("ENDPOINT_PORT"), nil); err != nil {
 		log.Fatalf("%s: error starting http server: %v", serviceName, err)
 	}
