@@ -39,9 +39,9 @@ func LoadDBConfig() (DBConfig, error) {
 	return DBConfig{
 		Type:     dbType,
 		Host:     os.Getenv("DB_HOST"),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
+		User:     os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
+		DBName:   os.Getenv("POSTGRES_NAME"),
 		Port:     os.Getenv("DB_PORT"),
 		SSLMode:  os.Getenv("DB_SSLMODE"),
 	}, nil

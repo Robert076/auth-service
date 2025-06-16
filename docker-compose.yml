@@ -1,0 +1,25 @@
+services:
+  postgres-service:
+    image: postgres:latest
+    container_name: auth-service-db-container
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_service_data:/var/lib/postgresql/data
+
+  auth-service:
+    image: robert076/auth-service:beta
+    container_name: auth-service-service-container
+    ports:
+      - "${ENDPOINT_PORT}:${ENDPOINT_PORT}"
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres-service
+
+volumes:
+  auth_service_data:
