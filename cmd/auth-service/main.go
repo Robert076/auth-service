@@ -7,6 +7,7 @@ import (
 	"os"
 
 	db_config "github.com/Robert076/auth-service/internal/db/db-config"
+	"github.com/Robert076/auth-service/internal/db/repository"
 	postgres_repository "github.com/Robert076/auth-service/internal/db/repository/postgres"
 	validation_service "github.com/Robert076/auth-service/internal/service/validation-service"
 	user "github.com/Robert076/auth-service/internal/user"
@@ -39,7 +40,9 @@ func main() {
 
 	defer db.Close()
 
-	repo := postgres_repository.NewPostgresRepository(db)
+	var repo repository.IRepository
+
+	repo = postgres_repository.NewPostgresRepository(db)
 
 	http.HandleFunc("/register", func(writer http.ResponseWriter, request *http.Request) {
 		if err := validation_service.IsValidHttpRequest(request, http.MethodPost); err != nil {
