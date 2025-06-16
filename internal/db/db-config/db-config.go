@@ -6,8 +6,8 @@ import (
 	"os"
 
 	db_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies"
-	mysql_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies/mysql-strategy.go"
-	postgres_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies/postgres-strategy.go"
+	mysql "github.com/Robert076/auth-service/internal/db/db-config/strategies/mysql"
+	postgres "github.com/Robert076/auth-service/internal/db/db-config/strategies/postgres"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
@@ -50,12 +50,12 @@ func LoadDBConfig() (DBConfig, error) {
 func (cfg DBConfig) Strategy() (db_strategy.DBStrategy, error) {
 	switch cfg.Type {
 	case Postgres:
-		return postgres_strategy.PostgresStrategy{
+		return postgres.PostgresStrategy{
 			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
 			Password: cfg.Password, DbName: cfg.DBName, SSLMode: cfg.SSLMode,
 		}, nil
 	case MySQL:
-		return mysql_strategy.MySQLStrategy{
+		return mysql.MySQLStrategy{
 			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
 			Password: cfg.Password, DbName: cfg.DBName,
 		}, nil
