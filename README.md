@@ -2,7 +2,9 @@
 
 A standalone microservice that implements authorization using a PostgreSQL database and implemented in Go.
 
-One of the main focuses during this project was to concentrate on making the code scalable, and that is achieved by using the strategy pattern wherever possible.
+Just clone the repo and run it on your machine, plug in your database and just have fun with it.
+
+If you have a different users table please do modify the register DTO to include everything you need. Apart from that you can easily change the db type since it's using the strategy pattern making adjusting the db easy.
 
 ### 🚀 Run command
 
@@ -24,4 +26,12 @@ DB_SSLMODE=disable
 ENVIRONMENT=PRODUCTION
 ```
 
-> ❗️ Will be documented once the first release is out.
+### 💻 How it works
+
+Make a `POST` request to the `/register` endpoint with the corresponding body (check the register dto) and the account gets created
+
+Make a `GET` request to the `/login` endpoint with email and password, and if password hash matches (from db) it returns 200 (in the future will return a `JWT`)
+
+### 🧩 Adding another database
+
+You can easily swap out db's with one another since the code is not coupled to a certain database, it actually makes use of interfaces using the strategy pattern to enable you to add whatever db you prefer.
