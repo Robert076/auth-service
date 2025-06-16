@@ -9,3 +9,9 @@ type RegisterUserDTO struct {
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
+
+type LoginUserDTO struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}

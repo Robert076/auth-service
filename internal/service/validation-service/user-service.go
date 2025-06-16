@@ -14,13 +14,25 @@ func IsValidHttpRequest(incomingRequest *http.Request, expectedMethod string) er
 	return nil
 }
 
-func IsValidUser(user user.RegisterUserDTO) error {
+func IsValidUserRegister(user user.RegisterUserDTO) error {
 	if user.Username == "" {
 		return fmt.Errorf("username cannot be empty")
 	}
 
 	if user.Email == "" {
 		return fmt.Errorf("email cannot be empty")
+	}
+
+	if user.Password == "" {
+		return fmt.Errorf("password cannot be empty")
+	}
+
+	return nil
+}
+
+func IsValidUserLogin(user user.LoginUserDTO) error {
+	if user.Username == "" && user.Email == "" {
+		return fmt.Errorf("username and email cannot both be empty")
 	}
 
 	if user.Password == "" {
