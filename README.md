@@ -7,18 +7,20 @@ One of the main focuses during this project was to concentrate on making the cod
 ### 🚀 Run command
 
 ```bash
-docker run -p 5656:5656 --env-file ./.env robert076/auth-service:alpha
+docker compose up --build
 ```
 
 ### Example .env file
 
 ```
 ENDPOINT_PORT=5656
-DB_HOST=auth-service
-DB_USER=admin
-DB_PASSWORD=admin
+DB_TYPE=postgres
+DB_HOST=postgres-service
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
 DB_PORT=5432
-DB_NAME=users
+POSTGRES_NAME=authservicedb
+DB_SSLMODE=disable
 ENVIRONMENT=PRODUCTION
 ```
 
