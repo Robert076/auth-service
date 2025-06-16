@@ -7,7 +7,7 @@ One of the main focuses during this project was to concentrate on making the cod
 ### 🚀 Run command
 
 ```bash
-docker run -p 5656:5656 --env-file ./.env robert076/auth-service:alpha
+docker compose up --build
 ```
 
 ### Example .env file
