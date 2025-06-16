@@ -7,6 +7,8 @@ import (
 	"os"
 
 	db_config "github.com/Robert076/auth-service/internal/db/db-config"
+	"github.com/Robert076/auth-service/internal/db/repository"
+	postgres_repository "github.com/Robert076/auth-service/internal/db/repository/postgres"
 	validation_service "github.com/Robert076/auth-service/internal/service/validation-service"
 	user "github.com/Robert076/auth-service/internal/user"
 	"github.com/joho/godotenv"
@@ -38,6 +40,10 @@ func main() {
 
 	defer db.Close()
 
+	var repo repository.IRepository
+
+	repo = postgres_repository.NewPostgresRepository(db)
+
 	http.HandleFunc("/register", func(writer http.ResponseWriter, request *http.Request) {
 		if err := validation_service.IsValidHttpRequest(request, http.MethodPost); err != nil {
 			http.Error(writer, "Invalid method for request. This endpoint only accepts POST.", http.StatusBadRequest)
@@ -59,7 +65,12 @@ func main() {
 			return
 		}
 
-		log.Print("User: ", newUser)
+		if err := repo.RegisterUser(newUser); err != nil {
+			http.Error(writer, "Could not insert user in db", http.StatusBadRequest)
+			log.Printf("%s: Could not insert user in db: %v", serviceName, err)
+			return
+		}
+
 	})
 
 	if err := http.ListenAndServe(":"+os.Getenv("ENDPOINT_PORT"), nil); err != nil {

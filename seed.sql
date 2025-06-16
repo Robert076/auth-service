@@ -4,6 +4,7 @@ CREATE DATABASE authservicedb
 
 CREATE TABLE "Users"(
     "Id" SERIAL PRIMARY KEY,
-    "Name" VARCHAR(50),
-    "Email" VARCHAR(100) UNIQUE
+    "Username" VARCHAR(50),
+    "Email" VARCHAR(100) UNIQUE,
+    "Password" TEXT
 );
