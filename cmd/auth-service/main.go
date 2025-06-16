@@ -44,29 +44,29 @@ func main() {
 
 	repo = postgres_repository.NewPostgresRepository(db)
 
-	http.HandleFunc("/register", func(writer http.ResponseWriter, request *http.Request) {
-		if err := validation_service.IsValidHttpRequest(request, http.MethodPost); err != nil {
-			http.Error(writer, "Invalid method for request. This endpoint only accepts POST.", http.StatusBadRequest)
-			log.Printf("%s: Error validating request for POST (Register). The issue might be that this endpoint only accepts POST requests. Error: %v", serviceName, err)
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		if err := validation_service.IsValidHttpRequest(r, http.MethodPost); err != nil {
+			http.Error(w, "Invalid method for r. This endpoint only accepts POST.", http.StatusBadRequest)
+			log.Printf("%s: Error validating r for POST (Register). The issue might be that this endpoint only accepts POST rs. Error: %v", serviceName, err)
 			return
 		}
 
-		var newUser user.User
+		var u user.RegisterUserDTO
 
-		if err := json.NewDecoder(request.Body).Decode(&newUser); err != nil {
-			http.Error(writer, "Invalid JSON payload", http.StatusBadRequest)
+		if err := json.NewDecoder(r.Body).Decode(&u); err != nil {
+			http.Error(w, "Invalid JSON payload", http.StatusBadRequest)
 			log.Printf("%s: Invalid JSON payload: %v", serviceName, err)
 			return
 		}
 
-		if err := validation_service.IsValidUser(newUser); err != nil {
-			http.Error(writer, "Invalid user received for register endpoint.", http.StatusBadRequest)
+		if err := validation_service.IsValidUser(u); err != nil {
+			http.Error(w, "Invalid user received for register endpoint.", http.StatusBadRequest)
 			log.Printf("%s: Invalid user received for register endpoint: %v", serviceName, err)
 			return
 		}
 
-		if err := repo.RegisterUser(newUser); err != nil {
-			http.Error(writer, "Could not insert user in db", http.StatusBadRequest)
+		if err := repo.RegisterUser(u); err != nil {
+			http.Error(w, "Could not insert user in db", http.StatusBadRequest)
 			log.Printf("%s: Could not insert user in db: %v", serviceName, err)
 			return
 		}
@@ -74,12 +74,25 @@ func main() {
 		log.Printf("%s: Successfully added user in db.", serviceName)
 	})
 
-	http.HandleFunc("/login", func(writer http.ResponseWriter, request *http.Request) {
-		if err := validation_service.IsValidHttpRequest(request, http.MethodGet); err != nil {
-			http.Error(writer, "Invalid method for request. This endpoint only accepts GET.", http.StatusBadRequest)
-			log.Printf("%s: Error validating request for GET (login). The issue might be that this endpoint only accepts GET requests. Error: %v", serviceName, err)
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		if err := validation_service.IsValidHttpRequest(r, http.MethodGet); err != nil {
+			http.Error(w, "Invalid method for r. This endpoint only accepts GET.", http.StatusBadRequest)
+			log.Printf("%s: Error validating r for GET (login). The issue might be that this endpoint only accepts GET rs. Error: %v", serviceName, err)
 			return
 		}
+
+		if err := json.NewDecoder(r.Body).Decode(&u); err != nil {
+			http.Error(w, "Invalid JSON payload", http.StatusBadRequest)
+			log.Printf("%s: Invalid JSON payload: %v", serviceName, err)
+			return
+		}
+
+		if err := validation_service.IsValidUser(u); err != nil {
+			http.Error(w, "Invalid user received for login endpoint.", http.StatusBadRequest)
+			log.Printf("%s: Invalid user received for login endpoint: %v", serviceName, err)
+			return
+		}
+
 	})
 
 	if err := http.ListenAndServe(":"+os.Getenv("ENDPOINT_PORT"), nil); err != nil {

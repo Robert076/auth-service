@@ -2,7 +2,7 @@ package user
 
 import "time"
 
-type User struct {
+type RegisterUserDTO struct {
 	Id        int       `json:"id,omitempty"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`

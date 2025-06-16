@@ -14,7 +14,7 @@ func IsValidHttpRequest(incomingRequest *http.Request, expectedMethod string) er
 	return nil
 }
 
-func IsValidUser(user user.User) error {
+func IsValidUser(user user.RegisterUserDTO) error {
 	if user.Username == "" {
 		return fmt.Errorf("username cannot be empty")
 	}

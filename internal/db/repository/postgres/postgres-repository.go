@@ -18,7 +18,7 @@ func NewPostgresRepository(db *sql.DB) *PostgresRepository {
 	return &PostgresRepository{Db: db}
 }
 
-func (r *PostgresRepository) RegisterUser(user user.User) error {
+func (r *PostgresRepository) RegisterUser(user user.RegisterUserDTO) error {
 	hashedPassword, err := hashing_service.HashPassword(user.Password)
 	if err != nil {
 		return fmt.Errorf("could not hash password: %v", err)
