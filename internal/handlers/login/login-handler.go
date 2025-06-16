@@ -33,5 +33,12 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			return
 		}
 
+		if err := repo.LoginUser(u); err != nil {
+			http.Error(w, "Could not get user from db", http.StatusBadRequest)
+			log.Printf("%s: Could not get user from db: %v", constants.ServiceName, err)
+			return
+		}
+
+		log.Printf("user %s successfully logged in", u.Email)
 	}
 }

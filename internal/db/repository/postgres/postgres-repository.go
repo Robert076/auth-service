@@ -24,10 +24,28 @@ func (r *PostgresRepository) RegisterUser(user user.RegisterUserDTO) error {
 		return fmt.Errorf("could not hash password: %v", err)
 	}
 
-	query := `INSERT INTO "Users"("Username", "Email", "Password", "CreatedAt") VALUES($1, $2, $3, $4)`
-	_, err = r.Db.Exec(query, user.Username, user.Email, hashedPassword, time.Now())
+	insertQuery := `INSERT INTO "Users"("Username", "Email", "Password", "CreatedAt") VALUES($1, $2, $3, $4)`
+	_, err = r.Db.Exec(insertQuery, user.Username, user.Email, hashedPassword, time.Now())
 	if err != nil {
 		return fmt.Errorf("postgres insert error: %v", err)
+	}
+	return nil
+}
+
+func (r *PostgresRepository) LoginUser(user user.LoginUserDTO) error {
+	getPasswordQuery := `SELECT "Password" FROM "Users" WHERE "Email" = $1`
+
+	var storedPassword string
+	err := r.Db.QueryRow(getPasswordQuery, user.Email).Scan(&storedPassword)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("no user found with email: %s", user.Email)
+		}
+		return fmt.Errorf("error getting user's password from db: %v", err)
+	}
+
+	if !hashing_service.CompareHash(storedPassword, user.Password) {
+		return fmt.Errorf("password doesn't match")
 	}
 	return nil
 }
