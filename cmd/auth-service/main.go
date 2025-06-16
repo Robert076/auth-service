@@ -71,6 +71,7 @@ func main() {
 			return
 		}
 
+		log.Printf("%s: Successfully added user in db.", serviceName)
 	})
 
 	if err := http.ListenAndServe(":"+os.Getenv("ENDPOINT_PORT"), nil); err != nil {
