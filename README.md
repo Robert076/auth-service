@@ -30,7 +30,7 @@ ENVIRONMENT=PRODUCTION
 
 Make a `POST` request to the `/register` endpoint with the corresponding body (check the register dto) and the account gets created
 
-Make a `GET` request to the `/login` endpoint with email and password, and if password hash matches (from db) it returns 200 (in the future will return a `JWT`)
+Make a `GET` request to the `/login` endpoint with email and password, and if password hash matches (from db) it returns 200 (this is how you will know the login was succesful)
 
 ## 🧩 Adding another database
 
