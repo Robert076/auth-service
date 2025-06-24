@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	// helloo
+	// hello
 	if os.Getenv("ENVIRONMENT") != "PRODUCTION" {
 		if err := godotenv.Load(); err != nil {
 			log.Fatalf("%s: Failed loading env file", constants.ServiceName)
