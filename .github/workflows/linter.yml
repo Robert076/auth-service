@@ -40,4 +40,4 @@ jobs:
       - name: Build
         run: go build -v ./cmd/auth-service
       - name: Tests
-        run: go test ./.. -v -cover
+        run: go test ./... -v -cover
