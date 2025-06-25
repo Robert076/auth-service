@@ -6,7 +6,6 @@ import (
 	"os"
 
 	db_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies"
-	mysql "github.com/Robert076/auth-service/internal/db/db-config/strategies/mysql"
 	postgres "github.com/Robert076/auth-service/internal/db/db-config/strategies/postgres"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
@@ -53,11 +52,6 @@ func (cfg DBConfig) Strategy() (db_strategy.DBStrategy, error) {
 		return postgres.PostgresStrategy{
 			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
 			Password: cfg.Password, DbName: cfg.DBName, SSLMode: cfg.SSLMode,
-		}, nil
-	case MySQL:
-		return mysql.MySQLStrategy{
-			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
-			Password: cfg.Password, DbName: cfg.DBName,
 		}, nil
 	default:
 		return nil, fmt.Errorf("unsupported db type: %s", cfg.Type)
