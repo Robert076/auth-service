@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/Robert076/auth-service/internal/constants"
 	"github.com/Robert076/auth-service/internal/db/repository"
+	token_service "github.com/Robert076/auth-service/internal/service/token-service"
 	validation_service "github.com/Robert076/auth-service/internal/service/validation-service"
 	"github.com/Robert076/auth-service/internal/user"
 )
@@ -38,6 +40,26 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			log.Printf("%s: Could not get user from db: %v", constants.ServiceName, err)
 			return
 		}
+
+		sessionToken := token_service.GenerateToken(32)
+		csrfToken := token_service.GenerateToken(32)
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     "session_token",
+			Value:    sessionToken,
+			Expires:  time.Now().Add(time.Hour * 24),
+			HttpOnly: true,
+		})
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     "csrf_token",
+			Value:    csrfToken,
+			Expires:  time.Now().Add(time.Hour * 24),
+			HttpOnly: false,
+		})
+
+		// store token in db
+		// user.sessionToken = sessionToken
 
 		log.Printf("user %s successfully logged in", u.Email)
 	}
