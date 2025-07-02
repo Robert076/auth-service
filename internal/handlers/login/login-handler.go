@@ -64,7 +64,7 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			return
 		}
 
-		if err := repo.SetCsrfToken(u.Email, sessionToken); err != nil {
+		if err := repo.SetCsrfToken(u.Email, csrfToken); err != nil {
 			http.Error(w, "Cannot set csrf token.", http.StatusBadRequest)
 			log.Printf("%s: Could not set csrf token: %v", constants.ServiceName, err)
 			return
