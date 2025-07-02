@@ -52,7 +52,7 @@ func LoadDBConfig() (DBConfig, error) {
 
 func (cfg DBConfig) Strategy() (db_strategy.DBStrategy, error) {
 	switch cfg.Type {
-	case Postgres:
+	case Postgres: // can be turned into a factory if too many strategies are available
 		return postgres.PostgresStrategy{
 			Host: cfg.Host, Port: cfg.Port, User: cfg.User,
 			Password: cfg.Password, DbName: cfg.DBName, SSLMode: cfg.SSLMode,
