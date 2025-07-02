@@ -6,4 +6,8 @@ type IRepository interface {
 	RegisterUser(user user.RegisterUserDTO) error
 
 	LoginUser(user user.LoginUserDTO) error
+
+	SetSessionToken(username string, sessionToken string) error
+
+	SetCsrfToken(username string, csrfToken string) error
 }

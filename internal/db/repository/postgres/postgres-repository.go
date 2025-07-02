@@ -49,3 +49,11 @@ func (r *PostgresRepository) LoginUser(user user.LoginUserDTO) error {
 	}
 	return nil
 }
+
+func (r *PostgresRepository) SetSessionToken(username string, sessionToken string) error {
+	return nil
+}
+
+func (r *PostgresRepository) SetCsrfToken(username string, csrfToken string) error {
+	return nil
+}

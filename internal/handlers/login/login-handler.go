@@ -58,9 +58,17 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			HttpOnly: false, // accessible on client side
 		})
 
-		// store tokens in db
-		// user.sessionToken = sessionToken
-		// user.csrfToken = csrfToken
+		if err := repo.SetSessionToken(u.Username, sessionToken); err != nil {
+			http.Error(w, "Cannot set session token.", http.StatusBadRequest)
+			log.Printf("%s: Could not set session token: %v", constants.ServiceName, err)
+			return
+		}
+
+		if err := repo.SetCsrfToken(u.Username, sessionToken); err != nil {
+			http.Error(w, "Cannot set csrf token.", http.StatusBadRequest)
+			log.Printf("%s: Could not set csrf token: %v", constants.ServiceName, err)
+			return
+		}
 
 		log.Printf("user %s successfully logged in", u.Email)
 	}
