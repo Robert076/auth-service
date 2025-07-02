@@ -12,7 +12,7 @@ If you have a different users table please do modify the register DTO to include
 docker compose up --build
 ```
 
-### Example .env file
+### ⚙️ Example .env file
 
 ```
 ENDPOINT_PORT=5656
