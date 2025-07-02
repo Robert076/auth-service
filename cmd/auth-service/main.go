@@ -38,7 +38,7 @@ func main() {
 
 	defer db.Close()
 
-	repo := postgres_repository.NewPostgresRepository(db)
+	repo := postgres_repository.NewPostgresRepository(db) // change this to swap repos (i.e.: mysql_repository.NewMySQLRepository(db))
 
 	http.HandleFunc("/register", register_handler.RegisterHandler(repo))
 
