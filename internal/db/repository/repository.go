@@ -9,5 +9,5 @@ type IRepository interface {
 
 	SetSessionToken(username string, sessionToken string) error
 
-	SetCsrfToken(username string, csrfToken string) error
+	SetCsrfToken(email string, csrfToken string) error
 }

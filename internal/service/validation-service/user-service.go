@@ -31,8 +31,8 @@ func IsValidUserRegister(user user.RegisterUserDTO) error {
 }
 
 func IsValidUserLogin(user user.LoginUserDTO) error {
-	if user.Username == "" && user.Email == "" {
-		return fmt.Errorf("username and email cannot both be empty")
+	if user.Email == "" {
+		return fmt.Errorf("email cannot be empty")
 	}
 
 	if user.Password == "" {
