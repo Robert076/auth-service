@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"slices"
 
 	db_strategy "github.com/Robert076/auth-service/internal/db/db-config/strategies"
 	postgres "github.com/Robert076/auth-service/internal/db/db-config/strategies/postgres"
@@ -30,8 +31,11 @@ type DBConfig struct {
 
 func LoadDBConfig() (DBConfig, error) {
 	var dbType DbType = DbType(os.Getenv("DB_TYPE"))
-
-	if dbType != Postgres && dbType != MySQL {
+	var allowedDbTypes = []DbType{
+		Postgres,
+		MySQL,
+	}
+	if !slices.Contains(allowedDbTypes, dbType) {
 		return DBConfig{}, fmt.Errorf("invalid db type taken from env: %s", dbType)
 	}
 
