@@ -55,11 +55,12 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			Name:     "csrf_token",
 			Value:    csrfToken,
 			Expires:  time.Now().Add(time.Hour * 24),
-			HttpOnly: false,
+			HttpOnly: false, // accessible on client side
 		})
 
-		// store token in db
+		// store tokens in db
 		// user.sessionToken = sessionToken
+		// user.csrfToken = csrfToken
 
 		log.Printf("user %s successfully logged in", u.Email)
 	}
