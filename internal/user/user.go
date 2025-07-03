@@ -15,3 +15,7 @@ type LoginUserDTO struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type AuthorizeUserDTO struct {
+	Email string `json:"email"`
+}
