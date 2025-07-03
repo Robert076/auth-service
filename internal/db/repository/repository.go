@@ -10,4 +10,6 @@ type IRepository interface {
 	SetSessionToken(username string, sessionToken string) error
 
 	SetCsrfToken(email string, csrfToken string) error
+
+	GetUserByEmail(email string) error
 }
