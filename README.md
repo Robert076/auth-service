@@ -6,6 +6,12 @@ Just clone the repo and run it on your machine, plug in your database and just h
 
 If you have a different users table please do modify the register DTO to include everything you need. Apart from that you can easily change the db type since it's using the strategy pattern making adjusting the db easy.
 
+## ✍🏻 Diagram
+
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/df9176bd-2de7-420d-803b-33977e86e2f5" />
+
+---
+
 ## 🚀 Run command
 
 ```bash
