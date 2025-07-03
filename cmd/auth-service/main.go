@@ -10,6 +10,7 @@ import (
 	postgres_repository "github.com/Robert076/auth-service/internal/db/repository/postgres"
 	authorize_handler "github.com/Robert076/auth-service/internal/handlers/authorize"
 	login_handler "github.com/Robert076/auth-service/internal/handlers/login"
+	logout_handler "github.com/Robert076/auth-service/internal/handlers/logout"
 	register_handler "github.com/Robert076/auth-service/internal/handlers/register"
 	"github.com/joho/godotenv"
 )
@@ -46,6 +47,8 @@ func main() {
 	http.HandleFunc("/login", login_handler.LoginHandler(repo))
 
 	http.HandleFunc("/authorize", authorize_handler.AuthorizeHandler(repo))
+
+	http.HandleFunc("/logout", logout_handler.LogoutHandler(repo))
 
 	if err := http.ListenAndServe(":"+os.Getenv("ENDPOINT_PORT"), nil); err != nil {
 		log.Fatalf("%s: error starting http server: %v", constants.ServiceName, err)
