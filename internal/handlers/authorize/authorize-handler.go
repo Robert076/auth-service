@@ -2,6 +2,7 @@ package authorize_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -17,18 +18,53 @@ func AuthorizeHandler(repo repository.IRepository) http.HandlerFunc {
 			log.Printf("This endpoint only accepts POST requests: %v", err)
 			return
 		}
-		var u user.AuthorizeUserDTO
+		var userAuthorize user.AuthorizeUserDTO
 
-		if err := json.NewDecoder(r.Body).Decode(&u); err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&userAuthorize); err != nil {
 			http.Error(w, "Error decoding body", http.StatusBadRequest)
 			log.Printf("Error decoding JSON body for authorization: %v", err)
 			return
 		}
 
-		if err := repo.GetUserByEmail(u.Email); err != nil {
+		u, err := repo.GetUserByEmail(userAuthorize.Email)
+		if err != nil {
 			http.Error(w, "Error retrieving user from db", http.StatusBadRequest)
 			log.Printf("Error retrieving user from db: %v", err)
 			return
 		}
+
+		sessionToken, err := r.Cookie("session_token")
+
+		if err != nil {
+			http.Error(w, "Error retrieving session token from cookie", http.StatusBadRequest)
+			log.Printf("Error retrieving session token from cookie: %v", err)
+			return
+		}
+
+		if err := validateSessionToken(sessionToken.Value, u); err != nil {
+			http.Error(w, "Error validating session token", http.StatusBadRequest)
+			log.Printf("Error validating session token: %v", err)
+			return
+		}
+
+		csrfToken := r.Header.Get("X-CSRF-Token")
+
+		if err := validateCsrfToken(csrfToken); err != nil {
+			http.Error(w, "Error validating csrf token", http.StatusBadRequest)
+			log.Printf("Error validating csrf token: %v", err)
+			return
+		}
 	}
+}
+
+func validateSessionToken(sessionToken string, u user.UserDTO) error {
+	if sessionToken == "" {
+		return fmt.Errorf("session token cannot be empty")
+	}
+
+	if sessionToken != u.SessionToken {
+		return fmt.Errorf("session token received differs from the one in the database")
+	}
+
+	return nil
 }
