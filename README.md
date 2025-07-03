@@ -30,7 +30,11 @@ ENVIRONMENT=PRODUCTION
 
 Make a `POST` request to the `/register` endpoint with the corresponding body (check the register dto) and the account gets created
 
-Make a `GET` request to the `/login` endpoint with email and password, and if password hash matches (from db) it returns 200 (this is how you will know the login was succesful)
+Make a `POST` request to the `/login` endpoint with email and password, and if password hash matches (from db) it returns 200 (this is how you will know the login was succesful)
+
+Make a `POST` request to the `/authorize` endpoint with the email attached and if the session token + csrf token match (include csrf token in header when making the request) you get 200
+
+Make a `POST` request to logout with the email attached. At the moment it doesn't check for authorization.
 
 ## 🧩 Adding another database
 
