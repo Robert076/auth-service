@@ -70,6 +70,7 @@ func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 			return
 		}
 
+		w.WriteHeader(http.StatusOK)
 		log.Printf("User %s successfully logged in", u.Username)
 	}
 }

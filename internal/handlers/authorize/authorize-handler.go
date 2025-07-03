@@ -55,6 +55,7 @@ func AuthorizeHandler(repo repository.IRepository) http.HandlerFunc {
 			return
 		}
 
+		w.WriteHeader(http.StatusOK)
 		log.Printf("Successfully authorized user %s", u.Email)
 	}
 }

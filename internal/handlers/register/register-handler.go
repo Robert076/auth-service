@@ -39,6 +39,7 @@ func RegisterHandler(repo repository.IRepository) http.HandlerFunc {
 			return
 		}
 
+		w.WriteHeader(http.StatusOK)
 		log.Printf("%s: Successfully added user in db.", constants.ServiceName)
 	}
 }
