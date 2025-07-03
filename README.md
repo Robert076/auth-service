@@ -8,7 +8,7 @@ If you have a different users table please do modify the register DTO to include
 
 ## ✍🏻 Diagram
 
-<img width="400" alt="Image" src="https://github.com/user-attachments/assets/df9176bd-2de7-420d-803b-33977e86e2f5" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/df9176bd-2de7-420d-803b-33977e86e2f5" />
 
 ---
 
