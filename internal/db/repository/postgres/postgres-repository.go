@@ -71,10 +71,14 @@ func (r *PostgresRepository) SetCsrfToken(email string, csrfToken string) error 
 }
 
 func (r *PostgresRepository) GetUserByEmail(email string) (user.UserDTO, error) {
-	getUserByEmailQuery := `SELECT FROM "Users" WHERE "Email" = $1` // probably a good idea to index the email column
+	getUserByEmailQuery := `
+							SELECT "Id", "Email", "Username", "Password", "CreatedAt", "SessionToken", "CsrfToken"
+							FROM "Users"
+							WHERE "Email" = $1
+						   ` // probably a good idea to index the email column
 
 	var u user.UserDTO
-	err := r.Db.QueryRow(getUserByEmailQuery, email).Scan(&u)
+	err := r.Db.QueryRow(getUserByEmailQuery, email).Scan(&u.Id, &u.Email, &u.Username, &u.Password, &u.CreatedAt, &u.SessionToken, &u.CsrfToken)
 	if err != nil {
 		return user.UserDTO{}, fmt.Errorf("error retrieving user from db: %v", err)
 	}
