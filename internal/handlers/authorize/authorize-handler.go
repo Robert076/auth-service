@@ -49,11 +49,13 @@ func AuthorizeHandler(repo repository.IRepository) http.HandlerFunc {
 
 		csrfToken := r.Header.Get("X-CSRF-Token")
 
-		if err := validateCsrfToken(csrfToken); err != nil {
+		if err := validateCsrfToken(csrfToken, u); err != nil {
 			http.Error(w, "Error validating csrf token", http.StatusBadRequest)
 			log.Printf("Error validating csrf token: %v", err)
 			return
 		}
+
+		log.Printf("Successfully authorized user %s", u.Email)
 	}
 }
 
@@ -64,6 +66,18 @@ func validateSessionToken(sessionToken string, u user.UserDTO) error {
 
 	if sessionToken != u.SessionToken {
 		return fmt.Errorf("session token received differs from the one in the database")
+	}
+
+	return nil
+}
+
+func validateCsrfToken(csrfToken string, u user.UserDTO) error {
+	if csrfToken == "" {
+		return fmt.Errorf("csrf token cannot be empty")
+	}
+
+	if csrfToken != u.CsrfToken {
+		return fmt.Errorf("csrf token received differs from the one in the database")
 	}
 
 	return nil
