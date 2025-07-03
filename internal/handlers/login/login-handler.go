@@ -15,9 +15,9 @@ import (
 
 func LoginHandler(repo repository.IRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := validation_service.IsValidHttpRequest(r, http.MethodGet); err != nil {
-			http.Error(w, "Invalid method for request. This endpoint only accepts GET.", http.StatusMethodNotAllowed)
-			log.Printf("%s: Error validating request for GET (login). The issue might be that this endpoint only accepts GET rs. Error: %v", constants.ServiceName, err)
+		if err := validation_service.IsValidHttpRequest(r, http.MethodPost); err != nil {
+			http.Error(w, "Invalid method for request. This endpoint only accepts POST.", http.StatusMethodNotAllowed)
+			log.Printf("%s: Error validating request for POST (login). The issue might be that this endpoint only accepts POST rs. Error: %v", constants.ServiceName, err)
 			return
 		}
 
