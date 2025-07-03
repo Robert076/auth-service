@@ -19,3 +19,13 @@ type LoginUserDTO struct {
 type AuthorizeUserDTO struct {
 	Email string `json:"email"`
 }
+
+type UserDTO struct {
+	Id           int       `json:"id,omitempty"`
+	Username     string    `json:"username"`
+	Email        string    `json:"email"`
+	Password     string    `json:"password"`
+	SessionToken string    `json:"sessionToken"`
+	CsrfToken    string    `json:"csrfToken"`
+	CreatedAt    time.Time `json:"createdAt,omitempty"`
+}
