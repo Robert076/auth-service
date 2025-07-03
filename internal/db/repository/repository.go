@@ -12,4 +12,6 @@ type IRepository interface {
 	SetCsrfToken(email string, csrfToken string) error
 
 	GetUserByEmail(email string) (user.UserDTO, error)
+
+	ClearTokensByUserEmail(email string) error
 }

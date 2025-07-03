@@ -84,3 +84,13 @@ func (r *PostgresRepository) GetUserByEmail(email string) (user.UserDTO, error) 
 	}
 	return u, nil
 }
+
+func (r *PostgresRepository) ClearTokensByUserEmail(email string) error {
+	clearUserTokensQuery := `UPDATE "Users" SET "CsrfToken" = "", "SessionToken" = "" WHERE "Email" = $1`
+
+	_, err := r.Db.Exec(clearUserTokensQuery, email)
+	if err != nil {
+		return fmt.Errorf("error logging out user %s: %v", email, err)
+	}
+	return nil
+}
