@@ -12,7 +12,7 @@ services:
       - auth_service_data:/var/lib/postgresql/data
 
   auth-service:
-    image: robert076/auth-service:v3
+    image: robert076/auth-service:v4
     container_name: auth-service-service-container
     ports:
       - "${ENDPOINT_PORT}:${ENDPOINT_PORT}"
