@@ -40,7 +40,7 @@ Make a `POST` request to the `/login` endpoint with email and password, and if p
 
 Make a `POST` request to the `/authorize` endpoint with the email attached and if the session token + csrf token match (include csrf token in header when making the request) you get 200
 
-Make a `POST` request to logout with the email attached. At the moment it doesn't check for authorization.
+Make a `POST` request to `/logout` with the email attached. At the moment it doesn't check for authorization.
 
 ## 🧩 Adding another database
 
