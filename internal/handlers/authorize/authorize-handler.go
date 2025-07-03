@@ -14,7 +14,7 @@ import (
 func AuthorizeHandler(repo repository.IRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := validation_service.IsValidHttpRequest(r, http.MethodPost); err != nil {
-			http.Error(w, "This endpoint only accepts POST requests", http.StatusBadRequest)
+			http.Error(w, "This endpoint only accepts POST requests", http.StatusMethodNotAllowed)
 			log.Printf("This endpoint only accepts POST requests: %v", err)
 			return
 		}

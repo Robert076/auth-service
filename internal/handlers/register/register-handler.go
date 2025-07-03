@@ -14,7 +14,7 @@ import (
 func RegisterHandler(repo repository.IRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := validation_service.IsValidHttpRequest(r, http.MethodPost); err != nil {
-			http.Error(w, "Invalid method for r. This endpoint only accepts POST.", http.StatusBadRequest)
+			http.Error(w, "Invalid method for r. This endpoint only accepts POST.", http.StatusMethodNotAllowed)
 			log.Printf("%s: Error validating r for POST (Register). The issue might be that this endpoint only accepts POST rs. Error: %v", constants.ServiceName, err)
 			return
 		}
