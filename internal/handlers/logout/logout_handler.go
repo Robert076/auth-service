@@ -43,7 +43,7 @@ func LogoutHandler(repo repository.IRepository) http.HandlerFunc {
 
 		if err := repo.ClearTokensByUserEmail(u.Email); err != nil {
 			http.Error(w, "Error clearing tokens for user", http.StatusBadRequest)
-			log.Printf("%s: Error clearing tokens for user %s", constants.ServiceName, u.Email)
+			log.Printf("%s: Error clearing tokens for user %s: %v", constants.ServiceName, u.Email, err)
 			return
 		}
 
